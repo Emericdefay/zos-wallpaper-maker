@@ -1,39 +1,8 @@
-import numpy as np
-import math
-from PIL import (
-                            ImageQt,
-                            Image,
-                            ImageDraw,
-                            ImageFont,
-)
 from PyQt5.QtWidgets import (
                             QWidget,
-                            QGridLayout,
-                            QLabel,
                             QFileDialog,
                             QPushButton,
-                            QTextEdit,
                             QVBoxLayout,
-                            QHBoxLayout,
-                            QColorDialog,
-                            QSlider,
-                            QRubberBand,
-                            QSizePolicy,
-)
-from PyQt5.QtGui import (
-                            QTextCursor,
-                            QTextCharFormat,
-                            QColor,
-                            QTextOption,
-                            QFont,
-                            QPalette,
-                            QPixmap,
-                            QImage,
-)
-from PyQt5.QtCore import (
-                            Qt,
-                            QRect,
-                            QSize,
 )
 
 from Configuration.settings import COLORS, HEX_TO_COLORS, forbidden
@@ -57,11 +26,18 @@ class USSMaker(QWidget):
         layout = QVBoxLayout(self) 
         layout.addWidget(self.make_uss)
 
-
     def convert_hex(self, row, col):
+        """
+            Methode qui retourne l'addresse HEX de chaque bloc de texte
+            Spécifique à USS.
+        """
         return hex(0x110000 + (row)*self.ascii_width - 1 + col)
 
     def regroup_pixels(self, pixels):
+        """
+            Methode qui prend une liste d'objets représentant des pixels et 
+            retourne une liste d'objets regroupés selon leur couleur
+        """
         result = []
         current_object = None
         for pixel in pixels:
@@ -69,13 +45,16 @@ class USSMaker(QWidget):
                 # On commence un nouvel objet si on en a pas encore créé un
                 current_object = pixel
             elif pixel['c'] == current_object['c']:
-                # Si la couleur de l'objet courant est la même que celle de l'objet en cours,
-                # on concatène les symboles des deux objets
+                # Si la couleur de l'objet courant est la même que celle de 
+                # l'objet en cours, on concatène les symboles des deux objets
                 current_object['s'] += pixel['s']
             else:
-                # Si la couleur de l'objet courant est différente de celle de l'objet en cours,
-                # on ajoute l'objet en cours à la liste résultat et on crée un nouvel objet à partir de l'objet courant
-                if current_object['c'] != "#000000":  # On ignore les objets noirs
+                # Si la couleur de l'objet courant est différente de celle de 
+                # l'objet en cours, on ajoute l'objet en cours à la liste 
+                # résultat et on crée un nouvel objet à partir de l'objet 
+                # courant.
+                # On ignore les objets noirs
+                if current_object['c'] != "#000000":  
                     result.append(current_object)
                 current_object = pixel
 
@@ -85,6 +64,10 @@ class USSMaker(QWidget):
         return result
 
     def command(self, pixel: dict):
+        """
+            Methode qui s'occupe de générer les instructions unitairement pour
+            les textes à afficher sur le WALLPAPER.
+        """
         row = pixel.get('y')
         col = pixel.get('x')
         index_x = self.convert_hex(row, col)
@@ -104,6 +87,11 @@ class USSMaker(QWidget):
          DC    C'{text}'"""
 
     def truc(self):
+        """ 
+            Methode qui prend une liste d'objets représentant des pixels et 
+            retourne une liste concaténée de ces objets, en divisant la liste
+            originale en plusieurs sous-listes de longueur ascii_width
+        """
         pixels_lbl = []
         for k in range(len(self.pixels)//self.ascii_width):
             a= k*self.ascii_width
@@ -115,11 +103,20 @@ class USSMaker(QWidget):
         return pixels_full
 
     def make_jcl(self):
+        """
+            Methode qui génère le JCL
+        """
         if not self.text_list and not self.color_list:
             return
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
-        file_name, _ = QFileDialog.getSaveFileName(self, "Enregistrer le script", "", "Scripts JCL (*.jcl);;Tous les fichiers (*)", options=options)
+        file_name, _ = QFileDialog.getSaveFileName(
+            self,
+            "Enregistrer le script",
+            "",
+            "Scripts JCL (*.jcl);;Tous les fichiers (*)",
+            options=options
+        )
         if file_name:
             with open(file_name, 'w', encoding='utf-8') as f:
                 print(f"Write on file : {file_name}.", end='')
@@ -140,6 +137,10 @@ class USSMaker(QWidget):
                 print("Done")
 
     def update_ascii(self, text_list, color_list):
+        """
+            Methode qui met à jour les pixels qui sont dans la zone d'édition
+            QTextEditor (module ascii)
+        """
         self.text_list = text_list
         self.color_list = color_list
         self.pixels = list()

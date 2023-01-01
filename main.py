@@ -1,11 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QGridLayout,QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 from PyQt5.QtGui import QPalette, QColor
 
 from PyQt5.QtCore import (
                             Qt,
-                            QRect,
-                            QSize,
 )
 
 # importez les modules et les widgets nécessaires
@@ -27,13 +25,10 @@ class MainWindow(QWidget):
     def initUI(self):
         # définissez la largeur et la hauteur de la fenêtre
         self.setGeometry(0, 0, 1200, 610)
-        ascii_height = 220
-        ascii_width = 800
-
         self.max_height = 580
 
         # définissez le titre de la fenêtre
-        self.setWindowTitle("PimpIt")
+        self.setWindowTitle("Zos Wallpaper Maker")
 
         # définissez la couleur de fond de la fenêtre
         palette = QPalette()
@@ -48,15 +43,28 @@ class MainWindow(QWidget):
         layout.addWidget(self.image_widget, 0, 0)
         layout.addWidget(self.ascii_widget, 0, 1)
         layout.addWidget(self.ussmaker_widget, 0, 2)
-        # etc.
 
     def update_image(self, image):
+        """
+            update_image est une méthode de la classe MainWindow qui prend 
+            un paramètre image de type QImage. Cette méthode appelle la 
+            méthode update_image de l'objet ascii_widget, qui doit être 
+            une instance de la classe ASCIIWidget, en lui passant le paramètre 
+            image. La méthode update_image de ASCIIWidget devrait être 
+            utilisée pour mettre à jour l'image affichée dans l'interface 
+            utilisateur en utilisant le paramètre image.
+        """
         self.ascii_widget.update_image(image)
 
     def update_ascii(self, text, color):
+        """
+            update_ascii est une méthode de la classe MainWindow qui prend 
+            en argument du texte et des couleurs et les passe à la méthode 
+            update_ascii de l'instance de la classe USSMakerWidget appelée 
+            self.ussmaker_widget. Cette méthode permet de mettre à jour le 
+            texte et les couleurs affichés dans l'interface.
+        """
         self.ussmaker_widget.update_ascii(text, color)
-
-        
 
 
 if __name__ == '__main__':
