@@ -25,9 +25,6 @@ class MainWindow(QWidget):
     def initUI(self):
         # définissez la largeur et la hauteur de la fenêtre
         self.setGeometry(0, 0, 1200, 610)
-        ascii_height = 220
-        ascii_width = 800
-
         self.max_height = 580
 
         # définissez le titre de la fenêtre
