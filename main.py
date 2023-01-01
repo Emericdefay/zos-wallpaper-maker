@@ -51,8 +51,6 @@ class MainWindow(QWidget):
     def update_ascii(self, text, color):
         self.ussmaker_widget.update_ascii(text, color)
 
-        
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
