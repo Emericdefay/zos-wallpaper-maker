@@ -29,13 +29,16 @@ from Configuration.settings import VARIATIONS_ASCII, DISPLAYED_COLORS
 
 
 class ASCIIWidget(QWidget):
+    """
+        ASCIIWidget est une classe qui hérite de la classe QWidget de Qt, 
+        qui représente un widget de base dans une interface graphique. 
+        ASCIIWidget peut être utilisé pour afficher une image sous forme de 
+        caractères ASCII dans une interface graphique. 
+    """
     def __init__(self, ascii_height, ascii_width, parent=None, *args, **kwargs):
         """
-        Méthode de création de l'objet. Elle initialise les attributs 
-        de la classe et crée les widgets de l'interface.
-
-        Args:
-            parent (_type_, optional): _description_. Defaults to None.
+            Méthode de création de l'objet. Elle initialise les attributs 
+            de la classe et crée les widgets de l'interface.
         """
         super().__init__(parent)
         size_policy = QSizePolicy(
@@ -120,6 +123,25 @@ class ASCIIWidget(QWidget):
         self.ascii_label.setFont(self.font)
 
     def generate_image(self):
+        """
+            generate_image est une méthode qui s'utilise pour générer une image 
+            ASCII à partir d'une image donnée.
+
+            Elle commence par réinitialiser certaines variables de l'instance, 
+            comme la zone de texte, la simplification de l'image, les couleurs 
+            ASCII et le texte ASCII.
+
+            Elle convertit ensuite l'image donnée en un objet de la 
+            bibliothèque d'images Python (PIL) et la redimensionne en fonction 
+            de la taille de la zone de texte. Elle crée ensuite un tableau 
+            NumPy à partir de l'image et met à jour l'image de l'instance.
+
+            Elle appelle ensuite les méthodes generate_ascii_text et 
+            generate_ascii_colors, qui génèrent respectivement le texte ASCII 
+            et les couleurs ASCII à partir de l'image. Enfin, elle met à jour 
+            la zone de texte avec les caractères ASCII et les couleurs générés 
+            en appelant la méthode update_ascii.
+        """
         # réinitialisez la zone de texte
         self.ascii_label.setText('')
         self.simplified = False
@@ -148,6 +170,18 @@ class ASCIIWidget(QWidget):
             self.update_ascii()
 
     def generate_ascii_text(self, image):
+        """
+            generate_ascii_text est une méthode qui prend en entrée une image
+             sous forme de tableau NumPy et qui génère des caractères ASCII 
+             à partir de cette image.
+
+            Elle fonctionne en parcourant chaque pixel de l'image et en le 
+            convertissant en un caractère ASCII en fonction de sa luminosité. 
+            Plus précisément, la luminosité d'un pixel est calculée en 
+            faisant la moyenne de ses valeurs de rouge, de vert et de bleu, 
+            et en la comparant à un échantillon de valeurs de luminosité 
+            prédéfinies, chacune correspondant à un caractère ASCII.
+        """
         self.ascii_text = []
         # itérez sur chaque pixel de l'image
         for r in range(self.ascii_height):
@@ -175,6 +209,15 @@ class ASCIIWidget(QWidget):
             self.ascii_text.append(ascii_row)
 
     def generate_ascii_colors(self, image):
+        """
+            generate_ascii_colors est une méthode qui prend en entrée une 
+            image sous forme de tableau NumPy et génère des couleurs pour 
+            chaque caractère ASCII de la zone de texte de l'application. 
+            Elle fonctionne en parcourant chaque pixel de l'image et en 
+            utilisant la méthode get_ascii_color pour obtenir la couleur 
+            du caractère ASCII qui correspond au pixel. Ces couleurs sont 
+            ensuite stockées dans une liste self.ascii_colors.
+        """
         # itérez sur chaque ligne et colonne de l'image
         ascii_colors = []
         for r in range(self.ascii_height):
@@ -243,6 +286,30 @@ class ASCIIWidget(QWidget):
         self.resize(event.size().width(), event.size().height())
 
     def simplify_colors(self, method=""):
+        """
+            La fonction simplify_colors s'utilise pour remplacer chaque 
+            couleur de l'image ASCII par la couleur la plus proche parmi une 
+            liste prédéfinie de couleurs. La distance entre les couleurs est 
+            calculée en utilisant la formule de distance CIE76.
+
+            La fonction prend en argument un paramètre optionnel method qui 
+            peut être défini comme "sfe" pour activer un traitement 
+            spécifique des couleurs. Si method est défini comme "sfe", la 
+            couleur de chaque caractère est comparée à celle du caractère 
+            précédent dans la ligne. Si les deux couleurs sont différentes 
+            et que la couleur précédente n'est pas noire, la couleur actuelle 
+            est remplacée par noir.
+
+            Ensuite, la fonction itère sur chaque ligne de self.ascii_text 
+            et sur chaque caractère de la ligne. Elle récupère la couleur 
+            du caractère en utilisant self.ascii_colors[i][j], où i est 
+            l'indice de la ligne et j l'indice du caractère. La fonction 
+            calcule alors la distance euclidienne entre la couleur actuelle 
+            et chaque couleur de la liste colors en utilisant la fonction 
+            self.cie76. Si la distance est inférieure à la distance minimale 
+            trouvée jusqu'à présent, la distance minimale et la couleur 
+            la plus proche sont mises à jour.
+        """
         self.simplified = True
         ascii_colors = []
         # définis les couleurs à utiliser
@@ -290,6 +357,21 @@ class ASCIIWidget(QWidget):
         self.update_ascii()
 
     def hex_to_rgb(self, hex_color: str) -> tuple:
+        """
+            La fonction hex_to_rgb prend en entrée une chaîne de caractères 
+            hexadécimale qui représente une couleur, par exemple '#ff0000' 
+            pour du rouge. Elle retire le préfixe '0x' ou '#' de la chaîne 
+            si nécessaire, puis la convertit en entier en utilisant la 
+            fonction int avec comme base de conversion le système de 
+            numération hexadécimal.
+
+            Ensuite, la fonction utilise la fonction divmod pour diviser 
+            l'entier obtenu par les puissances de 256 correspondant aux 
+            valeurs RGB. Par exemple, si l'entier est 0xff0000, cela 
+            signifie que la valeur de rouge est 0xff, soit 255 en décimal. 
+            La fonction retourne finalement un tuple contenant les valeurs 
+            RGB sous forme de nombres entiers.
+        """
         # retirez le caractère de début '0x' de la chaîne hexadécimale
         if hex_color[0] == '#':
             hex_color = hex_color[1:]
@@ -305,6 +387,36 @@ class ASCIIWidget(QWidget):
         return red, green, blue
 
     def cie76(self, color1, color2):
+        """
+            La fonction cie76 calcule la distance de couleur entre deux 
+            couleurs en utilisant le modèle de couleur CIELab.
+
+            Le modèle CIELab est un modèle de couleur perceptuellement 
+            uniforme, ce qui signifie que la distance entre les couleurs 
+            dans l'espace CIELab reflète de manière fiable la distance perçue 
+            par l'œil humain entre les couleurs. La distance entre deux 
+            couleurs dans l'espace CIELab est donc un bon indicateur de la 
+            similitude perçue des couleurs.
+
+            La fonction cie76 calcule d'abord les composantes de 
+            couleur L, a et b pour chaque couleur en utilisant des formules 
+            qui convertissent les valeurs de couleur RVB (rouge, vert, bleu) 
+            en composantes de couleur L, a et b. La composante L représente 
+            la luminance (lumière) de la couleur, tandis que les 
+            composantes a et b représentent les teintes (couleurs).
+
+            Ensuite, la fonction calcule la distance entre les deux couleurs 
+            en utilisant la formule suivante:
+
+            distance = (L1 - L2) ** 2 + (a1 - a2) ** 2 + (b1 - b2) ** 2
+
+            Cette formule calcule la distance entre les composantes L, a et b 
+            de chaque couleur, puis calcule la racine carrée de la somme 
+            de ces distances au carré. La distance ainsi calculée est une 
+            mesure de la différence perçue entre les deux couleurs.
+
+            Enfin, la fonction cie76 retourne la distance ainsi calculée.
+        """
         r1, g1, b1 = self.hex_to_rgb(color1)
         r2, g2, b2 = self.hex_to_rgb(color2)
         l1 = 0.2126 * r1 + 0.7152 * g1 + 0.0722 * b1
