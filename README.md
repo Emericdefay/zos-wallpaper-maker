@@ -20,26 +20,16 @@
     <br> 
 </p>
 
-## 📝 Table of Contents
-
-- [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
-- [Usage](#usage)
-- [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
-- [Authors](#authors)
-- [Acknowledgments](#acknowledgement)
 
 # Zos WallPaper Maker
 Ce programme permet de générer des images ASCII à partir d'images réelles.
 
-<p>
-  <img src="./com/preview.png" width=500px align="center">
+<p align="center">
+  <img src="./com/preview.png" width=500px >
 </p>
 <details>
   <summary>Concernant le code</summary>
+
   ## Prérequis
   Pour pouvoir utiliser ce programme, vous devez avoir installé les bibliothèques suivantes :
 
@@ -69,6 +59,7 @@ Ce programme permet de générer des images ASCII à partir d'images réelles.
 </details>
 <details>
   <summary>Concernant le programme Release</summary>
+
   # Tutoriel
 
   1. Ouvrez votre image
@@ -82,4 +73,6 @@ Ce programme permet de générer des images ASCII à partir d'images réelles.
   7. Importez ce JCL sur votre système ZOS
   8. Executez le JCL
   9. Redémarrez votre système pour appliquer le changement
+
+
 </details>
