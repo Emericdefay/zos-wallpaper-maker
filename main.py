@@ -28,7 +28,7 @@ class MainWindow(QWidget):
         self.max_height = 580
 
         # définissez le titre de la fenêtre
-        self.setWindowTitle("PimpIt")
+        self.setWindowTitle("Zos Wallpaper Maker")
 
         # définissez la couleur de fond de la fenêtre
         palette = QPalette()
