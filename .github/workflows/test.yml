@@ -19,18 +19,3 @@ jobs:
       - name: Run tests
         run: |
           python -m unittest discover
-      # Mettre à jour le statut de la pull request en fonction du résultat des tests
-      - name: Update pull request status
-        uses: github/repo-dispatch@v1
-        with:
-          repository: ${{ github.repository }}
-          event_type: 'all-tests-passed'
-          client_payload: '{"status": "success"}'
-        if: success()
-      - name: Update pull request status
-        uses: github/repo-dispatch@v1
-        with:
-          repository: ${{ github.repository }}
-          event_type: 'some-tests-failed'
-          client_payload: '{"status": "failure"}'
-        if: failure()
