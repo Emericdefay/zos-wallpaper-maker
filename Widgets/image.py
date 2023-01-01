@@ -1,39 +1,18 @@
-import numpy as np
-import math
-from PIL import (
-                            Image
-)
 from PyQt5.QtWidgets import (
                             QWidget,
-                            QGridLayout,
                             QLabel,
                             QFileDialog,
                             QPushButton,
-                            QTextEdit,
                             QVBoxLayout,
-                            QColorDialog,
-                            QInputDialog,
-                            QSlider,
                             QRubberBand,
-                            QSizePolicy,
 )
 from PyQt5.QtGui import (
-                            QTextCursor,
-                            QTextCharFormat,
-                            QColor,
-                            QTextOption,
-                            QFont,
-                            QPalette,
                             QPixmap,
 )
 from PyQt5.QtCore import (
                             Qt,
                             QRect,
-                            QSize,
-                            QPoint,
 )
-
-from .ascii import ASCIIWidget
 
 
 class ImageWidget(QWidget):
