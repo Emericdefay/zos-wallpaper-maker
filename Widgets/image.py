@@ -16,6 +16,12 @@ from PyQt5.QtCore import (
 
 
 class ImageWidget(QWidget):
+    """
+        ImageWidget est une classe qui hérite de QWidget et qui est utilisée 
+        pour afficher une image à l'écran. Elle peut être utilisée de manière 
+        autonome ou intégrée à une fenêtre plus large (par exemple en utilisant
+        un layout).
+    """
     def __init__(
         self,
         Y_CONST,
@@ -63,6 +69,12 @@ class ImageWidget(QWidget):
         layout.addWidget(self.select_button)
 
     def open_image(self):
+        """
+            Cette méthode ouvre une image à partir de son emplacement sur le 
+            disque dur. Elle peut être utilisée pour afficher l'image dans 
+            l'interface utilisateur ou pour la traiter de quelque manière que 
+            ce soit.
+        """
         # Affichez une boîte de dialogue d'ouverture de fichier pour 
         # sélectionner l'image à ouvrir
         file_name, _ = QFileDialog.getOpenFileName(
@@ -91,6 +103,12 @@ class ImageWidget(QWidget):
             print('ERROR 102')
 
     def mousePressEvent(self, event):
+        """
+            Cette méthode est appelée lorsque l'utilisateur appuie sur un bouton
+            de la souris. Elle peut être utilisée pour détecter le début d'un clic 
+            de souris ou le déplacement de la souris avec un bouton maintenu 
+            enfoncé.
+        """
         # commencez la sélection lorsque l'utilisateur clique dans l'image
         self.origin = event.pos()
         if not self.image_opened:
@@ -110,6 +128,11 @@ class ImageWidget(QWidget):
             )
 
     def mouseMoveEvent(self, event):
+        """
+            Cette méthode est appelée lorsque l'utilisateur déplace la souris.
+            Elle peut être utilisée pour suivre le mouvement de la souris et
+            mettre à jour l'interface utilisateur en conséquence.
+        """
         if not self.image_opened:
             return
 
@@ -137,6 +160,12 @@ class ImageWidget(QWidget):
                 print('ERROR 101')
 
     def mouseReleaseEvent(self, event):
+        """
+            Cette méthode est appelée lorsque l'utilisateur relâche un bouton
+            de la souris. Elle peut être utilisée pour détecter la fin d'un 
+            clic de souris ou le déplacement de la souris avec un bouton 
+            maintenu enfoncé.
+        """
         # récupérez la zone sélectionnée
         self.selected_region = self.rubber_band.geometry()
         self.clicked_rubber_band = False
