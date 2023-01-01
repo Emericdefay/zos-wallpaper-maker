@@ -35,7 +35,7 @@ class ASCIIWidget(QWidget):
         ASCIIWidget peut être utilisé pour afficher une image sous forme de 
         caractères ASCII dans une interface graphique. 
     """
-    def __init__(self, ascii_height, ascii_width, parent=None, *args, **kwargs):
+    def __init__(self, ascii_height=22, ascii_width=80, parent=None, *args, **kwargs):
         """
             Méthode de création de l'objet. Elle initialise les attributs 
             de la classe et crée les widgets de l'interface.
@@ -159,12 +159,12 @@ class ASCIIWidget(QWidget):
             # créez un tableau NumPy à partir de l'image
             image = np.array(image)
             # update l'image de l'instance
-            self.image = image
+            self.image_array = image
             # générez les caractères ASCII à partir de l'image
-            self.generate_ascii_text(self.image)
+            self.generate_ascii_text(self.image_array)
             # générez les couleurs pour chaque caractère ASCII à partir de 
             # l'image
-            self.generate_ascii_colors(self.image)
+            self.generate_ascii_colors(self.image_array)
             # mettez à jour la zone de texte avec les caractères ASCII et les 
             # couleurs générés
             self.update_ascii()
@@ -272,7 +272,8 @@ class ASCIIWidget(QWidget):
                 cursor.insertText(char, char_format)
             # insérez un retour à la ligne à la fin de chaque ligne
             cursor.insertText("\n")
-        self.parent().update_ascii(self.ascii_text, self.ascii_colors)
+        if self.parent():
+            self.parent().update_ascii(self.ascii_text, self.ascii_colors)
 
     def resizeEvent(self, event):
         # calculez la nouvelle taille des caractères en fonction de la largeur
