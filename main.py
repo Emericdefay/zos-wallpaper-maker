@@ -1,11 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QGridLayout,QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 from PyQt5.QtGui import QPalette, QColor
 
 from PyQt5.QtCore import (
                             Qt,
-                            QRect,
-                            QSize,
 )
 
 # importez les modules et les widgets nécessaires
