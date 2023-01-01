@@ -26,7 +26,6 @@ class USSMaker(QWidget):
         layout = QVBoxLayout(self) 
         layout.addWidget(self.make_uss)
 
-
     def convert_hex(self, row, col):
         """
             Methode qui retourne l'addresse HEX de chaque bloc de texte
@@ -46,13 +45,16 @@ class USSMaker(QWidget):
                 # On commence un nouvel objet si on en a pas encore créé un
                 current_object = pixel
             elif pixel['c'] == current_object['c']:
-                # Si la couleur de l'objet courant est la même que celle de l'objet en cours,
-                # on concatène les symboles des deux objets
+                # Si la couleur de l'objet courant est la même que celle de 
+                # l'objet en cours, on concatène les symboles des deux objets
                 current_object['s'] += pixel['s']
             else:
-                # Si la couleur de l'objet courant est différente de celle de l'objet en cours,
-                # on ajoute l'objet en cours à la liste résultat et on crée un nouvel objet à partir de l'objet courant
-                if current_object['c'] != "#000000":  # On ignore les objets noirs
+                # Si la couleur de l'objet courant est différente de celle de 
+                # l'objet en cours, on ajoute l'objet en cours à la liste 
+                # résultat et on crée un nouvel objet à partir de l'objet 
+                # courant.
+                # On ignore les objets noirs
+                if current_object['c'] != "#000000":  
                     result.append(current_object)
                 current_object = pixel
 
@@ -108,7 +110,13 @@ class USSMaker(QWidget):
             return
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
-        file_name, _ = QFileDialog.getSaveFileName(self, "Enregistrer le script", "", "Scripts JCL (*.jcl);;Tous les fichiers (*)", options=options)
+        file_name, _ = QFileDialog.getSaveFileName(
+            self,
+            "Enregistrer le script",
+            "",
+            "Scripts JCL (*.jcl);;Tous les fichiers (*)",
+            options=options
+        )
         if file_name:
             with open(file_name, 'w', encoding='utf-8') as f:
                 print(f"Write on file : {file_name}.", end='')
