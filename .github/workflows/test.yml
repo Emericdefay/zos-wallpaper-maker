@@ -19,28 +19,18 @@ jobs:
       - name: Run tests
         run: |
           python -m unittest discover
-      # Si les tests ont réussi, ajoutez un marqueur "all tests passed"
-      # Sinon, ajoutez un marqueur "tests failed"
-      - name: Add label to PR
-        if: success()
-        run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.SECRET_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d '{"labels": ["all tests passed"]}' \
-            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/labels
-      - name: Add label to PR
-        if: failure()
-        run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.SECRET_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d '{"labels": ["tests failed"]}' \
-            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/labels
-      # Autorisez la pull request si les tests ont réussi
-      - name: Allow pull request
-        if: success()
-        uses: actions/create-status@v2
+      # Mettre à jour le statut de la pull request en fonction du résultat des tests
+      - name: Update pull request status
+        uses: github/repo-dispatch@v1
         with:
-          state: success
-          context: all tests passed
+          repository: ${{ github.repository }}
+          event_type: 'all-tests-passed'
+          client_payload: '{"status": "success"}'
+        if: success()
+      - name: Update pull request status
+        uses: github/repo-dispatch@v1
+        with:
+          repository: ${{ github.repository }}
+          event_type: 'some-tests-failed'
+          client_payload: '{"status": "failure"}'
+        if: failure()
