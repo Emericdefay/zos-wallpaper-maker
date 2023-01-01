@@ -37,12 +37,7 @@ class ASCIIWidget(QWidget):
         Args:
             parent (_type_, optional): _description_. Defaults to None.
         """
-        width_ascii = kwargs.get('width_ascii', 1007)
-        height_global = kwargs.get('height_global', 610)
         super().__init__(parent)
-        # self.setGeometry(100, 0, 640, 580)
-        # self.setMinimumSize(width_ascii, height_global)
-        # self.setMaximumSize(width_ascii, height_global)
         size_policy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Expanding)
         self.setSizePolicy(size_policy)
 
@@ -51,7 +46,6 @@ class ASCIIWidget(QWidget):
         self.image_pixmap = QPixmap()
         self.image_label.setPixmap(self.image_pixmap)
        
-
         # initialisez la hauteur et la largeur de l'image en ASCII en nombre de caractères
         self.ascii_height = ascii_height
         self.ascii_width = ascii_width
@@ -65,8 +59,6 @@ class ASCIIWidget(QWidget):
         self.font.setPointSizeF(12.5)
         self.font.setFamily("Courier")
         self.font.setWeight(QFont.Bold)
-
-
 
         # créez un objet QLabel pour afficher les caractères ASCII
         self.ascii_label = QTextEdit(self)
@@ -83,7 +75,6 @@ class ASCIIWidget(QWidget):
         self.red_def = 33
         self.grn_def = 33
         self.blu_def = 34
-
 
         # ajoutez un bouton pour changer la couleur de fond de la zone de texte
         self.color_button = QPushButton("Changer la couleur de fond")
@@ -225,7 +216,6 @@ class ASCIIWidget(QWidget):
             cursor.insertText("\n")
         self.parent().update_ascii(self.ascii_text, self.ascii_colors)
 
-
     def resizeEvent(self, event):
         # calculez la nouvelle taille des caractères en fonction de la largeur du widget d'ASCII
         font_size = self.width() / (self.ascii_width-5)
@@ -311,29 +301,10 @@ class ASCIIWidget(QWidget):
         self.generate_image()
         
     def save_as_image(self):
-        # Créez un objet PIL.Image à partir de l'QImage
-        # Créez une image Qt à partir du tableau NumPy
-        # image = QImage(self.image, self.image.shape[1], self.image.shape[0], QImage.Format_RGB888)
-
-        # # Créez une image PIL à partir de l'image Qt
-        # pil_image = Image.fromqimage(image)
-        # options = QFileDialog.Options()
-        # options |= QFileDialog.ReadOnly
-        # file_name, _ = QFileDialog.getSaveFileName(self, "Enregistrer l'image", "", "Images JPEG (*.jpg *.jpeg);;Tous les fichiers (*)", options=options)
-        # if file_name:
-        #     # Enregistrez l'image PIL dans le format souhaité
-        #     pil_image.save(file_name, "png", quality=100)
-
-
         # Capture de l'image du widget dans un objet QPixmap
         pixmap = QPixmap(self.ascii_label.width(), self.ascii_label.height())
         self.ascii_label.render(pixmap)
         scaled_pixmap = pixmap.scaled(self.ascii_width*10, self.ascii_height*10)
-        # Conversion de l'objet QPixmap en un objet QImage
-        image = pixmap.toImage()
-
-        # Conversion de l'objet QImage en un objet PIL.Image
-        #pil_image = Image.fromqimage(image)
 
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
