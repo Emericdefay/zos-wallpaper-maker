@@ -16,7 +16,13 @@ from PyQt5.QtCore import (
 
 
 class ImageWidget(QWidget):
-    def __init__(self, Y_CONST, X_CONST, brother, parent=None, *args, **kwargs):
+    def __init__(
+        self,
+        Y_CONST,
+        X_CONST,
+        brother,
+        parent=None,
+            *args, **kwargs):
         super().__init__(parent)
         # Créez un QLabel pour afficher l'image
         self.image_label = QLabel(self)
@@ -57,19 +63,29 @@ class ImageWidget(QWidget):
         layout.addWidget(self.select_button)
 
     def open_image(self):
-        # Affichez une boîte de dialogue d'ouverture de fichier pour sélectionner l'image à ouvrir
-        file_name, _ = QFileDialog.getOpenFileName(self, "Ouvrir l'image", "", "Images (*.png *.xpm *.jpg *.bmp);;Tous les fichiers (*)")
+        # Affichez une boîte de dialogue d'ouverture de fichier pour 
+        # sélectionner l'image à ouvrir
+        file_name, _ = QFileDialog.getOpenFileName(
+            self,
+            "Ouvrir l'image",
+            "",
+            "Images (*.png *.xpm *.jpg *.bmp);;Tous les fichiers (*)"
+        )
 
         # Si un fichier est sélectionné, chargez-le dans le QLabel
         if file_name:
             pixmap = QPixmap(file_name)
-            if pixmap.height() > self.max_height or pixmap.width() > self.max_width:
-                pixmap = pixmap.scaled(self.max_width, self.max_height, Qt.KeepAspectRatio)
+            if pixmap.height() > self.max_height or \
+               pixmap.width()  > self.max_width:
+                pixmap = pixmap.scaled(
+                    self.max_width,
+                    self.max_height,
+                    Qt.KeepAspectRatio
+                )
             # affichez le pixmap dans un widget QLabel ou autre
             self.pixmap = pixmap
             self.image_label.setPixmap(pixmap)
             self.image_opened = True
-            # self.rubber_band = QRect(0, 0, self.image_width, self.image_height)
         else: 
             self.image_opened = False
             print('ERROR 102')
@@ -87,9 +103,11 @@ class ImageWidget(QWidget):
         else:
             self.rubber_band.hide()
             self.origin = event.pos()
-            # Définit le rectangle de sélection à l'aide des coordonnées de départ et de la hauteur calculée
-            self.rubber_band.setGeometry(QRect(event.x(), event.y(), self.X_CONST, self.Y_CONST))
-            # self.rubber_band.show()            
+            # Définit le rectangle de sélection à l'aide des coordonnées de 
+            # départ et de la hauteur calculée
+            self.rubber_band.setGeometry(
+                QRect(event.x(), event.y(), self.X_CONST, self.Y_CONST)
+            )
 
     def mouseMoveEvent(self, event):
         if not self.image_opened:
@@ -99,14 +117,18 @@ class ImageWidget(QWidget):
             # déplacez le rubber_band en fonction de la position du curseur
             delta_x = event.pos().x() - self.last_mouse_position.x()
             delta_y = event.pos().y() - self.last_mouse_position.y()
-            self.rubber_band.move(self.rubber_band.x() + delta_x, self.rubber_band.y() + delta_y)
+            self.rubber_band.move(
+                self.rubber_band.x() + delta_x, self.rubber_band.y() + delta_y
+            )
             self.last_mouse_position = event.pos()
-            #self.rubber_band.move(event.pos())
         else:
             try:
-                self.rubber_band.setGeometry(QRect(self.origin, event.pos()).normalized())
+                self.rubber_band.setGeometry(
+                    QRect(self.origin, event.pos()).normalized()
+                )
                 x, y, w, h = self.rubber_band.geometry().getRect()
-                # Modifiez la hauteur en fonction de la largeur et des constantes x_const et y_const
+                # Modifiez la hauteur en fonction de la largeur et des 
+                # constantes x_const et y_const
                 h = int(w * self.Y_CONST / self.X_CONST)
                 self.rubber_band.setGeometry(x, y, w, h)
                 self.initial_rubber_band = self.rubber_band
@@ -118,7 +140,6 @@ class ImageWidget(QWidget):
         # récupérez la zone sélectionnée
         self.selected_region = self.rubber_band.geometry()
         self.clicked_rubber_band = False
-
 
     def send_area(self):
         try:
