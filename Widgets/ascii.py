@@ -38,7 +38,9 @@ class ASCIIWidget(QWidget):
             parent (_type_, optional): _description_. Defaults to None.
         """
         super().__init__(parent)
-        size_policy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Expanding)
+        size_policy = QSizePolicy(
+            QSizePolicy.MinimumExpanding, QSizePolicy.Expanding
+        )
         self.setSizePolicy(size_policy)
 
         # Créer l'image à afficher en utilisant un QLabel et une QPixmap
@@ -46,7 +48,8 @@ class ASCIIWidget(QWidget):
         self.image_pixmap = QPixmap()
         self.image_label.setPixmap(self.image_pixmap)
        
-        # initialisez la hauteur et la largeur de l'image en ASCII en nombre de caractères
+        # initialisez la hauteur et la largeur de l'image en ASCII en nombre 
+        # de caractères
         self.ascii_height = ascii_height
         self.ascii_width = ascii_width
         self.ascii_chars = VARIATIONS_ASCII
@@ -83,10 +86,14 @@ class ASCIIWidget(QWidget):
         # créez un bouton "Simplifier" pour ouvrir une image
         self.simplified = False
         self.simplify_button_sfe = QPushButton("Conversion 3270 (SFE)", self)
-        self.simplify_button_sfe.clicked.connect(lambda: self.simplify_colors("sfe"))
+        self.simplify_button_sfe.clicked.connect(
+            lambda: self.simplify_colors("sfe")
+        )
 
         self.simplify_button_sfsa = QPushButton("Conversion 327+ (SF/SA)", self)
-        self.simplify_button_sfsa.clicked.connect(lambda: self.simplify_colors("sfsa"))
+        self.simplify_button_sfsa.clicked.connect(
+            lambda: self.simplify_colors("sfsa")
+        )
 
         self.save_img = QPushButton("Sauvegarder en .png", self)
         self.save_img.clicked.connect(self.save_as_image)
@@ -105,7 +112,8 @@ class ASCIIWidget(QWidget):
 
         layout.addWidget(self.save_img)
 
-        # calculez la nouvelle taille des caractères en fonction de la largeur du widget d'ASCII
+        # calculez la nouvelle taille des caractères en fonction de la largeur
+        # du widget d'ASCII
         font_size = self.width() / (self.ascii_width+100)
         self.font.setPointSizeF(font_size)
         # mettez à jour la taille des caractères de la zone de texte
@@ -121,17 +129,22 @@ class ASCIIWidget(QWidget):
         image = Image.fromqimage(self.image)
 
         if image:
-            # redimensionnez l'image en fonction de la taille de la zone de texte
-            image = image.resize((self.ascii_width, self.ascii_height), resample=Image.BICUBIC)
+            # redimensionnez l'image en fonction de la taille de la zone de 
+            # texte
+            image = image.resize(
+                (self.ascii_width, self.ascii_height), resample=Image.BICUBIC
+            )
             # créez un tableau NumPy à partir de l'image
             image = np.array(image)
             # update l'image de l'instance
             self.image = image
             # générez les caractères ASCII à partir de l'image
             self.generate_ascii_text(self.image)
-            # générez les couleurs pour chaque caractère ASCII à partir de l'image
+            # générez les couleurs pour chaque caractère ASCII à partir de 
+            # l'image
             self.generate_ascii_colors(self.image)
-            # mettez à jour la zone de texte avec les caractères ASCII et les couleurs générés
+            # mettez à jour la zone de texte avec les caractères ASCII et les 
+            # couleurs générés
             self.update_ascii()
 
     def generate_ascii_text(self, image):
@@ -155,7 +168,6 @@ class ASCIIWidget(QWidget):
                 if gray > 256:
                     gray = 255
 
-                # ascii_index = int(gray_level * (len(self.ascii_chars) - 1) / 255)
                 ascii_index = int(gray / 256.0 * len(self.ascii_chars))
                 
                 ascii_char = self.ascii_chars[ascii_index]
@@ -171,7 +183,8 @@ class ASCIIWidget(QWidget):
                 try:
                     # récupérez les valeurs RVB et alpha du pixel
                     red, green, blue, alpha = image[r][c]
-                    # créez un objet QColor à partir des valeurs RVB et alpha du pixel
+                    # créez un objet QColor à partir des valeurs RVB et alpha
+                    # du pixel
                     color = QColor(red, green, blue, alpha)
                 except ValueError:
                     # récupérez les valeurs de rouge, vert et bleu du pixel
@@ -205,24 +218,28 @@ class ASCIIWidget(QWidget):
         for i, row in enumerate(self.ascii_text):
             # itérez sur chaque caractère de la ligne
             for j, char in enumerate(row):
-                # récupérez la couleur du caractère à partir de self.ascii_colors
+                # récupérez la couleur du caractère à partir de 
+                # self.ascii_colors
                 color = self.ascii_colors[i][j]
                 # créez un objet QTextCharFormat avec la couleur du caractère
                 char_format = QTextCharFormat()
                 char_format.setForeground(color)
-                # insérez le caractère ASCII dans la zone de texte avec le format de texte défini
+                # insérez le caractère ASCII dans la zone de texte avec le 
+                # format de texte défini
                 cursor.insertText(char, char_format)
             # insérez un retour à la ligne à la fin de chaque ligne
             cursor.insertText("\n")
         self.parent().update_ascii(self.ascii_text, self.ascii_colors)
 
     def resizeEvent(self, event):
-        # calculez la nouvelle taille des caractères en fonction de la largeur du widget d'ASCII
+        # calculez la nouvelle taille des caractères en fonction de la largeur
+        # du widget d'ASCII
         font_size = self.width() / (self.ascii_width-5)
         self.font.setPointSizeF(font_size)
         # mettez à jour la taille des caractères de la zone de texte
         self.ascii_label.setFont(self.font)
-        # redimensionnez le widget d'ASCII en fonction de la taille de la fenêtre principale
+        # redimensionnez le widget d'ASCII en fonction de la taille de la 
+        # fenêtre principale
         self.resize(event.size().width(), event.size().height())
 
     def simplify_colors(self, method=""):
@@ -244,7 +261,9 @@ class ASCIIWidget(QWidget):
                 for c in colors:
                     # calculer la distance euclidienne entre les deux couleurs
                     distance = self.cie76(c, color.name())
-                    # si la distance est inférieure à la distance minimale trouvée jusqu'à présent, mettre à jour la distance minimale et la couleur la plus proche
+                    # si la distance est inférieure à la distance minimale 
+                    # trouvée jusqu'à présent, mettre à jour la distance 
+                    # minimale et la couleur la plus proche
                     if distance < min_distance:
                         min_distance = distance
                         nearest_color = c
@@ -256,7 +275,8 @@ class ASCIIWidget(QWidget):
                         current_pixel = nearest_color[2:]
                         last_pixel = text[j-1].name()[1:]
                         black_pixel = '000000'
-                        if (current_pixel != last_pixel) and (last_pixel != black_pixel):
+                        if (current_pixel != last_pixel) and \
+                           (last_pixel != black_pixel):
                             new_color = QColor(0, 0, 0)
                         else:
                             new_color = QColor(red, green, blue)
@@ -304,12 +324,20 @@ class ASCIIWidget(QWidget):
         # Capture de l'image du widget dans un objet QPixmap
         pixmap = QPixmap(self.ascii_label.width(), self.ascii_label.height())
         self.ascii_label.render(pixmap)
-        scaled_pixmap = pixmap.scaled(self.ascii_width*10, self.ascii_height*10)
+        scaled_pixmap = pixmap.scaled(
+            self.ascii_width*10, self.ascii_height*10
+        )
 
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         # Sauvegarde de l'image dans un fichier
-        file_name, _ = QFileDialog.getSaveFileName(self, "Enregistrer l'image", "", "Images PNG (*.png);;Tous les fichiers (*)", options=options)
+        file_name, _ = QFileDialog.getSaveFileName(
+            self,
+            "Enregistrer l'image",
+            "",
+            "Images PNG (*.png);;Tous les fichiers (*)",
+            options=options
+        )
         if file_name:
             # Enregistrez l'image PIL dans le format souhaité
             scaled_pixmap.save(file_name, "png", quality=100)
