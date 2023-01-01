@@ -18,11 +18,6 @@ from PyQt5.QtCore import (
 class ImageWidget(QWidget):
     def __init__(self, Y_CONST, X_CONST, brother, parent=None, *args, **kwargs):
         super().__init__(parent)
-        #self.setGeometry(100, 100, 500, 610)
-        height_global = kwargs.get('height_global', 610)
-        #self.setMinimumSize(100, height_global)
-        # size_policy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Expanding)
-        # self.setSizePolicy(size_policy)
         # Créez un QLabel pour afficher l'image
         self.image_label = QLabel(self)
         self.Y_CONST = Y_CONST
@@ -80,12 +75,6 @@ class ImageWidget(QWidget):
             print('ERROR 102')
 
     def mousePressEvent(self, event):
-        # # Obtenir les coordonnées de la fenêtre dans le système de coordonnées global
-        # window_coords = self.window().mapToGlobal(QPoint(0, 0))
-        # # Soustraire les coordonnées de la fenêtre aux coordonnées de la souris
-        # # pour obtenir les coordonnées dans le système de coordonnées de la fenêtre
-        # x = event.globalX() - window_coords.x()
-        # y = event.globalY() - window_coords.y()
         # commencez la sélection lorsque l'utilisateur clique dans l'image
         self.origin = event.pos()
         if not self.image_opened:
