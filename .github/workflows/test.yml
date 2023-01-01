@@ -1,0 +1,53 @@
+name: Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Clone le dépôt
+      - uses: actions/checkout@v2
+      # Installe les dépendances
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      # Exécutez les tests
+      - name: Run tests
+        run: |
+          python -m unittest discover
+      # Si les tests ont réussi, ajoutez un marqueur "all tests passed"
+      # Sinon, ajoutez un marqueur "tests failed"
+      - name: Add label to PR
+        if: success()
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"labels": ["all tests passed"]}' \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/labels
+      - name: Add label to PR
+        if: failure()
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"labels": ["tests failed"]}' \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/labels
+      # Autorisez la pull request si les tests ont réussi
+      - name: Allow pull request
+        if: success()
+        uses: peter-evans/create-status@v2
+        with:
+          state: success
+          context: all tests passed
+      # Refusez la pull request si les tests ont échoué
+      - name: Deny pull request
+        if: failure()
+        uses: peter-evans/create-status@v2
+        with:
+          state: failure
+          context: tests failed
