@@ -1,3 +1,11 @@
 # Dev
 env/
 venv/
+build/
+dist/
+dev_req*
+compiler
+main.spec
+app/406c45293148eb4b99d434ab42eddb85.png
+
+__pycache__
