@@ -9,6 +9,8 @@ on:
   pull_request:
     branches: [ main ]
 
+env: 
+      QT_DEBUG_PLUGINS: "1"
 
 jobs:
   build:
