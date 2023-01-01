@@ -6,6 +6,8 @@ from PyQt5.QtCore import (
                             Qt,
 )
 
+import resources
+
 # importez les modules et les widgets nécessaires
 from Widgets.ascii import    ASCIIWidget
 from Widgets.image import    ImageWidget
@@ -28,7 +30,7 @@ class MainWindow(QWidget):
         self.max_height = 580
 
         # Charger l'icône à partir d'un fichier
-        self.setWindowIcon(QIcon('./favicon.ico'))
+        self.setWindowIcon(QIcon(':/icons/favicon'))
 
         # définissez le titre de la fenêtre
         self.setWindowTitle("Zos Wallpaper Maker")
