@@ -28,9 +28,17 @@ class USSMaker(QWidget):
 
 
     def convert_hex(self, row, col):
+        """
+            Methode qui retourne l'addresse HEX de chaque bloc de texte
+            Spécifique à USS.
+        """
         return hex(0x110000 + (row)*self.ascii_width - 1 + col)
 
     def regroup_pixels(self, pixels):
+        """
+            Methode qui prend une liste d'objets représentant des pixels et 
+            retourne une liste d'objets regroupés selon leur couleur
+        """
         result = []
         current_object = None
         for pixel in pixels:
@@ -54,6 +62,10 @@ class USSMaker(QWidget):
         return result
 
     def command(self, pixel: dict):
+        """
+            Methode qui s'occupe de générer les instructions unitairement pour
+            les textes à afficher sur le WALLPAPER.
+        """
         row = pixel.get('y')
         col = pixel.get('x')
         index_x = self.convert_hex(row, col)
@@ -73,6 +85,11 @@ class USSMaker(QWidget):
          DC    C'{text}'"""
 
     def truc(self):
+        """ 
+            Methode qui prend une liste d'objets représentant des pixels et 
+            retourne une liste concaténée de ces objets, en divisant la liste
+            originale en plusieurs sous-listes de longueur ascii_width
+        """
         pixels_lbl = []
         for k in range(len(self.pixels)//self.ascii_width):
             a= k*self.ascii_width
@@ -84,6 +101,9 @@ class USSMaker(QWidget):
         return pixels_full
 
     def make_jcl(self):
+        """
+            Methode qui génère le JCL
+        """
         if not self.text_list and not self.color_list:
             return
         options = QFileDialog.Options()
@@ -109,6 +129,10 @@ class USSMaker(QWidget):
                 print("Done")
 
     def update_ascii(self, text_list, color_list):
+        """
+            Methode qui met à jour les pixels qui sont dans la zone d'édition
+            QTextEditor (module ascii)
+        """
         self.text_list = text_list
         self.color_list = color_list
         self.pixels = list()
