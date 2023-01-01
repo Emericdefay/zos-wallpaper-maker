@@ -40,14 +40,7 @@ jobs:
       # Autorisez la pull request si les tests ont réussi
       - name: Allow pull request
         if: success()
-        uses: peter-evans/create-status@v2
+        uses: actions/create-status@v2
         with:
           state: success
           context: all tests passed
-      # Refusez la pull request si les tests ont échoué
-      - name: Deny pull request
-        if: failure()
-        uses: peter-evans/create-status@v2
-        with:
-          state: failure
-          context: tests failed
