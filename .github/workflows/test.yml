@@ -46,10 +46,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: XCB
-        shell: bash -l {0}
-        run: |
-          sudo apt-get install libxcb-xinerama0
       - name: Setup
         shell: bash -l {0}
         run: |
