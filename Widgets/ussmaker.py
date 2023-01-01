@@ -1,39 +1,8 @@
-import numpy as np
-import math
-from PIL import (
-                            ImageQt,
-                            Image,
-                            ImageDraw,
-                            ImageFont,
-)
 from PyQt5.QtWidgets import (
                             QWidget,
-                            QGridLayout,
-                            QLabel,
                             QFileDialog,
                             QPushButton,
-                            QTextEdit,
                             QVBoxLayout,
-                            QHBoxLayout,
-                            QColorDialog,
-                            QSlider,
-                            QRubberBand,
-                            QSizePolicy,
-)
-from PyQt5.QtGui import (
-                            QTextCursor,
-                            QTextCharFormat,
-                            QColor,
-                            QTextOption,
-                            QFont,
-                            QPalette,
-                            QPixmap,
-                            QImage,
-)
-from PyQt5.QtCore import (
-                            Qt,
-                            QRect,
-                            QSize,
 )
 
 from Configuration.settings import COLORS, HEX_TO_COLORS, forbidden
