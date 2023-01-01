@@ -19,11 +19,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - operating-system: macos-latest
-            python-version: '3.11'
-            label: osx-64-py-3-11
-            prefix: /Users/runner/miniconda3/envs/my-env
-
           - operating-system: windows-latest
             python-version: '3.11'
             label: win-64-py-3-11
@@ -51,7 +46,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Setup
+      - name: XCB
         shell: bash -l {0}
         run: |
           sudo apt-get install libxcb-xinerama0
