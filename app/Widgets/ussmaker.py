@@ -4,9 +4,17 @@ from PyQt5.QtWidgets import (
                             QPushButton,
                             QVBoxLayout,
 )
-
-from Configuration.settings import COLORS, HEX_TO_COLORS, forbidden
-from Presets.ussskeleton import PART1, PART2
+from Configuration.settings import (
+    COLORS,
+    HEX_TO_COLORS,
+    forbidden,
+    DISPLAYED_COLORS,
+)
+from Presets.ussskeleton import (
+    PART1,
+    PART2
+)
+from Presets.default_settings import load_settings
 
 
 class USSMaker(QWidget):
@@ -18,6 +26,7 @@ class USSMaker(QWidget):
         self.ascii_width = 80
         self.pixels = list()
         self.sep_pixels = list()
+        self.settings = load_settings()
 
         self.make_uss = QPushButton("Créer JCL", self)
         self.make_uss.clicked.connect(self.make_jcl)
@@ -73,7 +82,16 @@ class USSMaker(QWidget):
         index_x = self.convert_hex(row, col)
         index = (row)*self.ascii_width - 1 + col
         text = pixel.get('s', ' ')
-        colore = HEX_TO_COLORS.get(pixel.get('c'), 'WHITE')
+        linked_dict = zip(
+            self.settings.get(
+                'PREVIEWED_COLORS'
+            ),
+            self.settings.get(
+                'ASSOCIATED_NAME'
+            )
+        )
+        colores = {('#' + key[2:]):value for key, value in linked_dict}
+        colore = colores.get(pixel.get('c'), 'WHITE')
         if len(text) > 40:
             return f"""
          DC    X'{index_x.upper().replace('0X', '')}'               SBA, {index:04}     ROW {(pixel.get('y')):02} COL {pixel.get('x'):02}

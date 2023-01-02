@@ -1,3 +1,4 @@
+import json
 import numpy as np
 from PIL import (
                             Image,
@@ -25,6 +26,7 @@ from PyQt5.QtCore import (
                             Qt,
 )
 
+from Presets.default_settings import load_settings
 from Configuration.settings import VARIATIONS_ASCII, DISPLAYED_COLORS
 
 
@@ -77,10 +79,8 @@ class ASCIIWidget(QWidget):
         # appliquez l'objet QPalette à la zone de texte
         self.ascii_label.setPalette(palette)
 
-        # Curseurs
-        self.red_def = 33
-        self.grn_def = 33
-        self.blu_def = 34
+        # chargement des paramètres sauvegardés en json
+        self.settings = load_settings()
 
         # ajoutez un bouton pour changer la couleur de fond de la zone de texte
         self.color_button = QPushButton("Changer la couleur de fond")
@@ -195,9 +195,9 @@ class ASCIIWidget(QWidget):
                     # récupérez les valeurs de rouge, vert et bleu du pixel
                     red, green, blue = image[r][c]
 
-                gray = self.red_def * red + \
-                       self.grn_def * green + \
-                       self.blu_def * blue 
+                gray = 33 * red + \
+                       33 * green + \
+                       34 * blue 
                 gray /= 100
                 if gray > 256:
                     gray = 255
@@ -314,7 +314,13 @@ class ASCIIWidget(QWidget):
         self.simplified = True
         ascii_colors = []
         # définis les couleurs à utiliser
-        colors = DISPLAYED_COLORS
+        self.settings = load_settings()
+        colors = self.settings.get('DISPLAYED_COLORS', DISPLAYED_COLORS)
+        previewed_colors = self.settings.get(
+            'PREVIEWED_COLORS',
+            self.settings.get('DISPLAYED_COLORS', DISPLAYED_COLORS)
+        )
+        
 
         # itère sur chaque caractère ASCII de self.ascii_chars
         for i, row in enumerate(self.ascii_text):
@@ -326,7 +332,7 @@ class ASCIIWidget(QWidget):
                 # trouve la couleur la plus proche parmi celles définies
                 min_distance = float("inf")
                 nearest_color = None
-                for c in colors:
+                for index, c in enumerate(colors):
                     # calculer la distance euclidienne entre les deux couleurs
                     distance = self.cie76(c, color.name())
                     # si la distance est inférieure à la distance minimale 
@@ -335,6 +341,9 @@ class ASCIIWidget(QWidget):
                     if distance < min_distance:
                         min_distance = distance
                         nearest_color = c
+                        # Traduire la couleur associé à la couleur voulue
+                        nearest_color = previewed_colors[index]
+                        #print(c, previewed_colors[index])
 
                 # remplace la couleur par la couleur la plus proche
                 red, green, blue = self.hex_to_rgb(nearest_color)
