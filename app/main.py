@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import (
     QWidget, 
     QGridLayout, 
     QPushButton, 
-    QMainWindow,
     QVBoxLayout,
     QDialog,
     
@@ -22,7 +21,6 @@ from PyQt5.QtCore import (
 
 import resources
 
-# importez les modules et les widgets nécessaires
 from Widgets.ascii import    ASCIIWidget
 from Widgets.image import    ImageWidget
 from Widgets.ussmaker import USSMaker
