@@ -172,12 +172,19 @@ class ImageWidget(QWidget):
 
     def send_area(self):
         try:
-            selected_pixmap = self.pixmap.copy(self.selected_region)
-            selected_image = selected_pixmap.toImage()
-            # Recherche l'instance du widget ASCII en utilisant son type
-            self.parent().update_image(selected_image)
-        except AttributeError:
-            selected_pixmap = self.pixmap
-            selected_image = selected_pixmap.toImage()
-            # Recherche l'instance du widget ASCII en utilisant son type
-            self.parent().update_image(selected_image)
+            try:
+                selected_pixmap = self.pixmap.copy(self.selected_region)
+                selected_image = selected_pixmap.toImage()
+                # Recherche l'instance du widget ASCII en utilisant son type
+                self.parent().update_image(selected_image)
+            except AttributeError as e:
+                selected_pixmap = self.pixmap
+                selected_image = selected_pixmap.toImage()
+                # Recherche l'instance du widget ASCII en utilisant son type
+                self.parent().update_image(selected_image)
+        except AttributeError as e: 
+            if "object has no attribute 'toImage'" in str(e):
+                pass
+            else:
+                print(e) 
+                pass
