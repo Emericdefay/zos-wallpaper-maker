@@ -2,7 +2,10 @@ import json
 
 
 def load_settings():
-    """Charge les paramètres à partir d'un fichier json. Si le fichier n'existe pas, il est créé à partir des paramètres par défaut."""
+    """
+        Charge les paramètres à partir d'un fichier json. Si le 
+        fichier n'existe pas, il est créé à partir des paramètres par défaut.
+    """
     # Vérification de l'existence de "settings.json"
     try:
         with open("settings.json", "r") as f:
