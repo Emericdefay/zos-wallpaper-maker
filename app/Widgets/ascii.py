@@ -1,31 +1,29 @@
-import json
 import numpy as np
 from PIL import (
-                            Image,
+    Image,
 )
 from PyQt5.QtWidgets import (
-                            QWidget,
-                            QLabel,
-                            QFileDialog,
-                            QPushButton,
-                            QTextEdit,
-                            QVBoxLayout,
-                            QHBoxLayout,
-                            QColorDialog,
-                            QSizePolicy,
+    QWidget,
+    QLabel,
+    QFileDialog,
+    QPushButton,
+    QTextEdit,
+    QVBoxLayout,
+    QHBoxLayout,
+    QColorDialog,
+    QSizePolicy,
 )
 from PyQt5.QtGui import (
-                            QTextCursor,
-                            QTextCharFormat,
-                            QColor,
-                            QFont,
-                            QPalette,
-                            QPixmap,
+    QTextCursor,
+    QTextCharFormat,
+    QColor,
+    QFont,
+    QPalette,
+    QPixmap,
 )
 from PyQt5.QtCore import (
-                            Qt,
+    Qt,
 )
-
 from Presets.default_settings import load_settings
 from Configuration.settings import VARIATIONS_ASCII, DISPLAYED_COLORS
 
@@ -37,7 +35,12 @@ class ASCIIWidget(QWidget):
         ASCIIWidget peut être utilisé pour afficher une image sous forme de 
         caractères ASCII dans une interface graphique. 
     """
-    def __init__(self, ascii_height=22, ascii_width=80, parent=None, *args, **kwargs):
+    def __init__(
+        self, 
+        ascii_height=22, 
+        ascii_width=80, 
+        parent=None, 
+            *args, **kwargs):
         """
             Méthode de création de l'objet. Elle initialise les attributs 
             de la classe et crée les widgets de l'interface.
@@ -320,7 +323,6 @@ class ASCIIWidget(QWidget):
             'PREVIEWED_COLORS',
             self.settings.get('DISPLAYED_COLORS', DISPLAYED_COLORS)
         )
-        
 
         # itère sur chaque caractère ASCII de self.ascii_chars
         for i, row in enumerate(self.ascii_text):
