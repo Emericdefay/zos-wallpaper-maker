@@ -1,31 +1,29 @@
-import json
 import numpy as np
 from PIL import (
-                            Image,
+    Image,
 )
 from PyQt5.QtWidgets import (
-                            QWidget,
-                            QLabel,
-                            QFileDialog,
-                            QPushButton,
-                            QTextEdit,
-                            QVBoxLayout,
-                            QHBoxLayout,
-                            QColorDialog,
-                            QSizePolicy,
+    QWidget,
+    QLabel,
+    QFileDialog,
+    QPushButton,
+    QTextEdit,
+    QVBoxLayout,
+    QHBoxLayout,
+    QColorDialog,
+    QSizePolicy,
 )
 from PyQt5.QtGui import (
-                            QTextCursor,
-                            QTextCharFormat,
-                            QColor,
-                            QFont,
-                            QPalette,
-                            QPixmap,
+    QTextCursor,
+    QTextCharFormat,
+    QColor,
+    QFont,
+    QPalette,
+    QPixmap,
 )
 from PyQt5.QtCore import (
-                            Qt,
+    Qt,
 )
-
 from Presets.default_settings import load_settings
 from Configuration.settings import VARIATIONS_ASCII, DISPLAYED_COLORS
 
@@ -37,7 +35,13 @@ class ASCIIWidget(QWidget):
         ASCIIWidget peut être utilisé pour afficher une image sous forme de 
         caractères ASCII dans une interface graphique. 
     """
-    def __init__(self, ascii_height=22, ascii_width=80, parent=None, *args, **kwargs):
+    def __init__(
+        self, 
+        ascii_height=22, 
+        ascii_width=80, 
+        parent=None, 
+        brother=None,
+            *args, **kwargs):
         """
             Méthode de création de l'objet. Elle initialise les attributs 
             de la classe et crée les widgets de l'interface.
@@ -47,6 +51,7 @@ class ASCIIWidget(QWidget):
             QSizePolicy.MinimumExpanding, QSizePolicy.Expanding
         )
         self.setSizePolicy(size_policy)
+        self.brother = brother
 
         # Créer l'image à afficher en utilisant un QLabel et une QPixmap
         self.image_label = QLabel(self)
@@ -273,7 +278,7 @@ class ASCIIWidget(QWidget):
             # insérez un retour à la ligne à la fin de chaque ligne
             cursor.insertText("\n")
         if self.parent():
-            self.parent().update_ascii(self.ascii_text, self.ascii_colors)
+            self.brother.update_ascii(self.ascii_text, self.ascii_colors)
 
     def resizeEvent(self, event):
         # calculez la nouvelle taille des caractères en fonction de la largeur
@@ -320,7 +325,6 @@ class ASCIIWidget(QWidget):
             'PREVIEWED_COLORS',
             self.settings.get('DISPLAYED_COLORS', DISPLAYED_COLORS)
         )
-        
 
         # itère sur chaque caractère ASCII de self.ascii_chars
         for i, row in enumerate(self.ascii_text):

@@ -2,7 +2,10 @@ import json
 
 
 def load_settings():
-    """Charge les paramètres à partir d'un fichier json. Si le fichier n'existe pas, il est créé à partir des paramètres par défaut."""
+    """
+        Charge les paramètres à partir d'un fichier json. Si le 
+        fichier n'existe pas, il est créé à partir des paramètres par défaut.
+    """
     # Vérification de l'existence de "settings.json"
     try:
         with open("settings.json", "r") as f:
@@ -47,5 +50,43 @@ def write_default_json():
         "PURPLE",
         "YELLOW",
         "WHITE" 
+    ],
+    "MESSAGES": [
+        "IST457I POSITIVE command COMMAND RESPONSE",
+        "IST450I INVALID command COMMAND SYNTAX",
+        "IST451I command COMMAND UNRECOGNIZED",
+        "IST452I parameter PARAMETER EXTRANEOUS",
+        "IST453I parameter PARAMETER VALUE value NOT VALID",
+        "N/A",
+        "IST792I NO SUCH SESSION EXISTS",
+        "N/A",
+        "IST454I COMMAND FAILED, INSUFFICIENT STORAGE",
+        "N/A",
+        "READY",
+        "IST455I parameters SESSIONS ENDED",
+        "IST456I keyword REQUIRED PARAMETER OMITTED",
+        "N/A",
+        "IST458I USS MESSAGE number NOT DEFINED"
     ]
 }''')
+
+
+def original_message(index):
+    MESSAGES= [
+        "IST457I POSITIVE command COMMAND RESPONSE",
+        "IST450I INVALID command COMMAND SYNTAX",
+        "IST451I command COMMAND UNRECOGNIZED",
+        "IST452I parameter PARAMETER EXTRANEOUS",
+        "IST453I parameter PARAMETER VALUE value NOT VALID",
+        "N/A",
+        "IST792I NO SUCH SESSION EXISTS",
+        "N/A",
+        "IST454I COMMAND FAILED, INSUFFICIENT STORAGE",
+        "N/A",
+        "READY",
+        "IST455I parameters SESSIONS ENDED",
+        "IST456I keyword REQUIRED PARAMETER OMITTED",
+        "N/A",
+        "IST458I USS MESSAGE number NOT DEFINED"
+    ]
+    return MESSAGES[index]

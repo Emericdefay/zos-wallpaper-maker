@@ -1,13 +1,8 @@
-import json, os
+import json
 from functools import partial
 from PyQt5.QtWidgets import (
     QWidget,
-    QFormLayout,
-    QLineEdit,
-    QSpinBox,
-    QCheckBox, 
     QPushButton, 
-    QMainWindow, 
     QLabel,
     QVBoxLayout, 
     QGroupBox, 
@@ -16,20 +11,14 @@ from PyQt5.QtWidgets import (
     QGraphicsDropShadowEffect,
 )
 from PyQt5.QtGui import (
-    QTextCursor,
-    QTextCharFormat,
     QColor,
     QFont,
     QPalette,
-    QPixmap,
 )
-
 from PyQt5.QtCore import (
-    QPointF,
     pyqtSignal,
     Qt,
 )
-
 from Presets.default_settings import load_settings, write_default_json
 
 
@@ -38,7 +27,8 @@ class SettingsWidget(QWidget):
 
     Attributes:
         parent (QWidget): Widget parent.
-        settings (dict): Dictionnaire contenant les paramètres de l'application.
+        settings (dict): Dictionnaire contenant les paramètres de 
+                         l'application.
     """
     # Définition du signal personnalisé settingsSaved
     settingsSaved = pyqtSignal()
@@ -48,6 +38,10 @@ class SettingsWidget(QWidget):
 
         # Charge les paramètres
         self.settings = load_settings()
+
+        palette = QPalette()
+        palette.setColor(QPalette.Background, QColor(129, 129, 129))
+        self.setPalette(palette)
 
         # Mise en place de l'interface utilisateur
         self.setLayout(QVBoxLayout())
@@ -114,26 +108,24 @@ class SettingsWidget(QWidget):
         # Bouton Par Défaut
         self.default_button = QPushButton("Défaut")
 
-
-        # cols
+        # sublayout
         sublayout_1 = QHBoxLayout()
         sublayout_1.addWidget(self.color_groupbox)
         sublayout_1.addWidget(self.prev_colors_groupbox)
-
         self.layout().addLayout(sublayout_1)
         
-
+        # save / default
         self.layout().addWidget(self.save_button)
         self.layout().addWidget(self.default_button)
 
-        # Connexion des signaux
+        # Connexion des signaux color
         for index in range(len(self.color_widgets)):
             color_label  = self.color_widgets[index][0]
             color_button = self.color_widgets[index][1]
             color_button.clicked.connect(
                 partial(self.change_color, index, color_label)
                 )
-        # Connexion des signaux
+        # Connexion des signaux prev_color
         for index in range(len(self.prev_color_widgets)):
             color_label  = self.prev_color_widgets[index][0]
             prev_color_button = self.prev_color_widgets[index][1]
@@ -144,7 +136,9 @@ class SettingsWidget(QWidget):
         self.default_button.clicked.connect(self.default_settings)
 
     def change_color(self, index, color_label):
-        """Modifie la couleur à l'index spécifié dans la liste DISPLAYED_COLORS.
+        """
+            Modifie la couleur à l'index spécifié dans 
+            la liste DISPLAYED_COLORS.
 
         Args:
             index (int): Index de la couleur à modifier.
@@ -156,20 +150,25 @@ class SettingsWidget(QWidget):
         # Récupérer la couleur actuelle à partir du widget de couleur
         current_color = color_label.palette().color(QPalette.Window)
 
-        # Afficher une boîte de dialogue de sélection de couleur avec la couleur actuelle en valeur initiale
+        # Afficher une boîte de dialogue de sélection de couleur avec 
+        # la couleur actuelle en valeur initiale
         color = QColorDialog.getColor(current_color)
         # vérifiez si une couleur a été sélectionnée
         if color.isValid():
             try:
-                self.settings['DISPLAYED_COLORS'][index] = '0x' + color.name()[1:]
-                self.color_widgets[index][0].setStyleSheet(f"background-color: {color.name()};")
-
+                self.settings['DISPLAYED_COLORS'][index] = '0x' + \
+                                                            color.name()[1:]
+                self.color_widgets[index][0].setStyleSheet(
+                    f"background-color: {color.name()};"
+                )
             except Exception as e:
                 print(e)
                 pass
 
     def change_prev_color(self, index, color_label):
-        """Modifie la couleur à l'index spécifié dans la liste DISPLAYED_COLORS.
+        """
+            Modifie la couleur à l'index spécifié dans 
+            la liste DISPLAYED_COLORS.
 
         Args:
             index (int): Index de la couleur à modifier.
@@ -181,14 +180,17 @@ class SettingsWidget(QWidget):
         # Récupérer la couleur actuelle à partir du widget de couleur
         current_color = color_label.palette().color(QPalette.Window)
 
-        # Afficher une boîte de dialogue de sélection de couleur avec la couleur actuelle en valeur initiale
+        # Afficher une boîte de dialogue de sélection de couleur avec la 
+        # couleur actuelle en valeur initiale
         color = QColorDialog.getColor(current_color)
         # vérifiez si une couleur a été sélectionnée
         if color.isValid():
             try:
-                self.settings['PREVIEWED_COLORS'][index] = '0x' + color.name()[1:]
-                self.prev_color_widgets[index][0].setStyleSheet(f"background-color: {color.name()};")
-
+                self.settings['PREVIEWED_COLORS'][index] = '0x' + \
+                                                            color.name()[1:]
+                self.prev_color_widgets[index][0].setStyleSheet(
+                    f"background-color: {color.name()};"
+                )
             except Exception as e:
                 print(e)
                 pass
@@ -197,7 +199,8 @@ class SettingsWidget(QWidget):
         """Sauvegarde les paramètres de l'application dans un fichier JSON.
 
         Returns:
-            bool: True si les paramètres ont été sauvegardés avec succès, False sinon.
+            bool: True si les paramètres ont été sauvegardés avec succès, 
+            False sinon.
         """
         try:
             with open('settings.json', 'w') as f:
