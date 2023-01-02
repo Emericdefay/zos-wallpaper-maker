@@ -22,7 +22,7 @@
 
 
 # Zos WallPaper Maker
-Ce programme permet de générer des images ASCII à partir d'images réelles.
+Ce programme permet de générer des images ASCII à partir d'images réelles et de générer un script JCL associé pour l'appliquer à ZOS.
 
 <p align="center">
   <img src="./com/preview.png" width=500px >
