@@ -6,9 +6,7 @@ from PyQt5.QtWidgets import (
 )
 from Configuration.settings import (
     COLORS,
-    HEX_TO_COLORS,
     forbidden,
-    DISPLAYED_COLORS,
 )
 from Presets.ussskeleton import (
     PART1,
