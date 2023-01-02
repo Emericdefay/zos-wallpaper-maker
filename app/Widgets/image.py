@@ -104,10 +104,10 @@ class ImageWidget(QWidget):
 
     def mousePressEvent(self, event):
         """
-            Cette méthode est appelée lorsque l'utilisateur appuie sur un bouton
-            de la souris. Elle peut être utilisée pour détecter le début d'un clic 
-            de souris ou le déplacement de la souris avec un bouton maintenu 
-            enfoncé.
+            Cette méthode est appelée lorsque l'utilisateur appuie sur un 
+            bouton de la souris. Elle peut être utilisée pour détecter le 
+            début d'un clic de souris ou le déplacement de la souris avec 
+            un bouton maintenu enfoncé.
         """
         # commencez la sélection lorsque l'utilisateur clique dans l'image
         self.origin = event.pos()
