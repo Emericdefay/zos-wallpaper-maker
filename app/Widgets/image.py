@@ -1,17 +1,20 @@
 from PyQt5.QtWidgets import (
-                            QWidget,
-                            QLabel,
-                            QFileDialog,
-                            QPushButton,
-                            QVBoxLayout,
-                            QRubberBand,
+    QWidget,
+    QLabel,
+    QFileDialog,
+    QPushButton,
+    QVBoxLayout,
+    QRubberBand,
 )
 from PyQt5.QtGui import (
-                            QPixmap,
+    QPixmap,
+    QPalette,
+    QColor,
 )
 from PyQt5.QtCore import (
-                            Qt,
-                            QRect,
+    Qt,
+    QRect,
+    pyqtSignal,
 )
 
 
@@ -22,6 +25,8 @@ class ImageWidget(QWidget):
         autonome ou intégrée à une fenêtre plus large (par exemple en utilisant
         un layout).
     """
+    selected_image_sended = pyqtSignal()
+
     def __init__(
         self,
         Y_CONST,
@@ -36,12 +41,19 @@ class ImageWidget(QWidget):
         self.X_CONST = X_CONST
         self.clicked_rubber_band = False
         self.ascii_widget = brother
+        self.parent = parent
 
         # Proportions maximales
         max_width = kwargs.get('max_width', 2000)
         max_height = kwargs.get('max_height', 610)
         self.max_width = max_width
         self.max_height = max_height
+
+        init_pixmap_width = 500
+
+        pixmap = QPixmap(init_pixmap_width, self.image_label.size().height())
+        pixmap.fill(QColor("#AAAAAA"))
+        self.image_label.setPixmap(pixmap)
 
         self.pixmap = None
 
@@ -176,15 +188,19 @@ class ImageWidget(QWidget):
                 selected_pixmap = self.pixmap.copy(self.selected_region)
                 selected_image = selected_pixmap.toImage()
                 # Recherche l'instance du widget ASCII en utilisant son type
-                self.parent().update_image(selected_image)
+                self.ascii_widget.update_image(selected_image)
+                self.selected_image_sended.emit()
             except AttributeError as e:
                 selected_pixmap = self.pixmap
                 selected_image = selected_pixmap.toImage()
                 # Recherche l'instance du widget ASCII en utilisant son type
-                self.parent().update_image(selected_image)
+                self.ascii_widget.update_image(selected_image)
+                self.selected_image_sended.emit()
         except AttributeError as e: 
             if "object has no attribute 'toImage'" in str(e):
                 pass
             else:
                 print(e) 
+                print("ERROR : 222")
+                raise e
                 pass

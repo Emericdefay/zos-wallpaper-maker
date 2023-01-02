@@ -10,7 +10,8 @@ from Configuration.settings import (
 )
 from Presets.ussskeleton import (
     PART1,
-    PART2
+    PART2,
+    PART3,
 )
 from Presets.default_settings import load_settings
 
@@ -27,6 +28,10 @@ class USSMaker(QWidget):
         self.settings = load_settings()
 
         self.make_uss = QPushButton("Créer JCL", self)
+        self.make_uss.setMinimumHeight(100)
+        self.make_uss.setMinimumWidth(160)
+        self.make_uss.setMaximumWidth(160)
+        self.make_uss.setStyleSheet("background-color: #a0a7f8; font-size: 20px;  border: 2px solid black;")
         self.make_uss.clicked.connect(self.make_jcl)
 
         # utilisez un layout pour organiser les widgets
@@ -102,6 +107,11 @@ class USSMaker(QWidget):
          DC    X'290242{COLORS.get(colore).get('ibm')}C0E0'         SFE, PROTECTED/NORMAL/{colore}
          DC    C'{text}'"""
 
+    def write_message(self, index, msg):
+        return f"""
+         SCREEN MSG={index:02},TEXT='{msg}'"""
+            
+
     def truc(self):
         """ 
             Methode qui prend une liste d'objets représentant des pixels et 
@@ -138,18 +148,22 @@ class USSMaker(QWidget):
                 print(f"Write on file : {file_name}.", end='')
                 # Part 1
                 f.write(PART1)
-                print(".", end="-")
-
-                #!SECTION
+                print(".", end="")
                 pixels = self.truc()
                 # LOGO Part                                                 
-                counter = 1
                 for pixel in pixels:       
                     f.write(self.command(pixel))  # white
                 # Part 2
                 f.write(PART2)
+                print(".", end="")
+                # MESSAGES
+                self.msgs = self.settings.get('MESSAGES')
+
+                for index, msg in enumerate(self.msgs):
+                    f.write(self.write_message(index, msg))
+                # Part 3
+                f.write(PART3)
                 print(".", end=" ")
-                # 
                 print("Done")
 
     def update_ascii(self, text_list, color_list):
@@ -173,3 +187,4 @@ class USSMaker(QWidget):
                         'c': self.color_list[i][j].name(),
                     }
                     self.pixels.append(this_pixel)
+

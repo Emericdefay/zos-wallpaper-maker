@@ -39,6 +39,10 @@ class SettingsWidget(QWidget):
         # Charge les paramètres
         self.settings = load_settings()
 
+        palette = QPalette()
+        palette.setColor(QPalette.Background, QColor(129, 129, 129))
+        self.setPalette(palette)
+
         # Mise en place de l'interface utilisateur
         self.setLayout(QVBoxLayout())
         self.color_groupbox = QGroupBox("Couleurs affichées")

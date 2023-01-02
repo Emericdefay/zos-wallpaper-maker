@@ -40,6 +40,7 @@ class ASCIIWidget(QWidget):
         ascii_height=22, 
         ascii_width=80, 
         parent=None, 
+        brother=None,
             *args, **kwargs):
         """
             Méthode de création de l'objet. Elle initialise les attributs 
@@ -50,6 +51,7 @@ class ASCIIWidget(QWidget):
             QSizePolicy.MinimumExpanding, QSizePolicy.Expanding
         )
         self.setSizePolicy(size_policy)
+        self.brother = brother
 
         # Créer l'image à afficher en utilisant un QLabel et une QPixmap
         self.image_label = QLabel(self)
@@ -276,7 +278,7 @@ class ASCIIWidget(QWidget):
             # insérez un retour à la ligne à la fin de chaque ligne
             cursor.insertText("\n")
         if self.parent():
-            self.parent().update_ascii(self.ascii_text, self.ascii_colors)
+            self.brother.update_ascii(self.ascii_text, self.ascii_colors)
 
     def resizeEvent(self, event):
         # calculez la nouvelle taille des caractères en fonction de la largeur

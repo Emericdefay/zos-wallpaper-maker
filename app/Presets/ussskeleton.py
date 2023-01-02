@@ -134,19 +134,9 @@ END      USSEND
 *  MSG 13: N/A
 *  MSG 14: IST458I USS MESSAGE number NOT DEFINED
 *********************************************************************** ********
-*  CUSTOMIZED USS MESSAGES:
-         SCREEN MSG=00,TEXT='Master, The command is in progress...'
-         SCREEN MSG=01,TEXT='Invalid command or syntax'
-         SCREEN MSG=02,TEXT='Ha Ha... You're wrong Master'
-         SCREEN MSG=03,TEXT='Parameter is unrecognized!'
-*        SCREEN MSG=04,TEXT='Parameter with value is invalid'
-         SCREEN MSG=05,TEXT='Why do you wanna leave me Master ?'
-         SCREEN MSG=06,TEXT='There is not such session.'
-         SCREEN MSG=08,TEXT='Command failed as storage shortage.'
-         SCREEN MSG=10,TEXT='Anything...'
-         SCREEN MSG=11,TEXT='Your session has ended'
-         SCREEN MSG=12,TEXT='Required parameter is missing'
-         SCREEN MSG=14,TEXT='There is an undefined USS message'
+*  CUSTOMIZED USS MESSAGES:"""
+
+PART3 = """
          END
 /*
 //L.SYSLMOD DD DISP=SHR,DSN=ADCD.Z110.VTAMLIB
@@ -154,3 +144,4 @@ END      USSEND
   NAME USSN(R)
 //*
 """
+
