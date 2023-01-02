@@ -1,13 +1,8 @@
-import json, os
+import json
 from functools import partial
 from PyQt5.QtWidgets import (
     QWidget,
-    QFormLayout,
-    QLineEdit,
-    QSpinBox,
-    QCheckBox, 
     QPushButton, 
-    QMainWindow, 
     QLabel,
     QVBoxLayout, 
     QGroupBox, 
@@ -16,16 +11,12 @@ from PyQt5.QtWidgets import (
     QGraphicsDropShadowEffect,
 )
 from PyQt5.QtGui import (
-    QTextCursor,
-    QTextCharFormat,
     QColor,
     QFont,
     QPalette,
-    QPixmap,
 )
 
 from PyQt5.QtCore import (
-    QPointF,
     pyqtSignal,
     Qt,
 )
