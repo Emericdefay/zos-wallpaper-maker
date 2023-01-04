@@ -67,6 +67,9 @@ def write_default_json():
         "IST456I keyword REQUIRED PARAMETER OMITTED",
         "N/A",
         "IST458I USS MESSAGE number NOT DEFINED"
+    ],
+    "INSTRUCTION": [
+        "===> Enter 'LOGON' followed by the TSO userid."
     ]
 }''')
 
@@ -90,3 +93,6 @@ def original_message(index):
         "IST458I USS MESSAGE number NOT DEFINED"
     ]
     return MESSAGES[index]
+
+def original_instruction():
+    return "===> Enter 'LOGON' followed by the TSO userid."

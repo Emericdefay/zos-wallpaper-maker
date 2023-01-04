@@ -23,6 +23,7 @@ from PyQt5.QtGui import (
 )
 from PyQt5.QtCore import (
     Qt,
+    pyqtSignal,
 )
 from Presets.default_settings import load_settings
 from Configuration.settings import VARIATIONS_ASCII, DISPLAYED_COLORS
@@ -35,6 +36,9 @@ class ASCIIWidget(QWidget):
         ASCIIWidget peut être utilisé pour afficher une image sous forme de 
         caractères ASCII dans une interface graphique. 
     """
+
+    simply_done = pyqtSignal()
+
     def __init__(
         self, 
         ascii_height=22, 
@@ -279,6 +283,7 @@ class ASCIIWidget(QWidget):
             cursor.insertText("\n")
         if self.parent():
             self.brother.update_ascii(self.ascii_text, self.ascii_colors)
+        self.simply_done.emit()
 
     def resizeEvent(self, event):
         # calculez la nouvelle taille des caractères en fonction de la largeur

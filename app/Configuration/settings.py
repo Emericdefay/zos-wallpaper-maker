@@ -1,5 +1,5 @@
 scales = {
-        'ascii_height':22,
+        'ascii_height':24,
         'ascii_width':80,
         'X_CONST':1280,
         'Y_CONST':860,
@@ -44,4 +44,4 @@ DISPLAYED_COLORS = [
     "0xffffff"
 ]
 
-VARIATIONS_ASCII = "MWJN8W6UvT1xm3C"
+VARIATIONS_ASCII = "MBHENRKWXDFPQASUZ8G04LOVY5T69CI23J17"

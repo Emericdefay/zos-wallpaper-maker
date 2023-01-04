@@ -32,6 +32,7 @@ from Widgets.ascii           import ASCIIWidget
 from Widgets.image           import ImageWidget
 from Widgets.ussmaker        import USSMaker
 from Widgets.prompt          import TextFieldWidget
+from Widgets.area_uss        import USSMessages
 from Widgets.settings_widget import SettingsWidget
 
 from Presets.texthelper      import get_help_text
@@ -52,7 +53,8 @@ class MainWindow(QWidget):
 
     def initUI(self):
         # définissez la largeur et la hauteur de la fenêtre
-        self.setGeometry(0, 0, 1200, 610)
+
+        self.setGeometry(100, 100, 1200, 610)
         self.max_height = 580
 
         # Charger l'icône à partir d'un fichier
@@ -75,6 +77,7 @@ class MainWindow(QWidget):
         self.ascii_widget = ASCIIWidget(**scales, brother=self.ussmaker_widget)
         self.image_widget = ImageWidget(brother=self.ascii_widget, parent=self, **scales)
 
+        self.ascii_widget.simply_done.connect(self.conversion_done)
         self.image_widget.selected_image_sended.connect(self.go_to_asciitab)
 
         # Créez une instance de QTabWidget et ajoutez-la au layout principal de votre fenêtre
@@ -88,6 +91,7 @@ class MainWindow(QWidget):
         self.tab_widget.addTab(self.image_widget, "Image en entrée")
         self.tab_widget.addTab(self.ascii_widget, "ASCII Art")
         self.tab_widget.addTab(self.prompt_widget, "Textes")
+        
 
         self.parameters = QPushButton("Paramètres")
         self.parameters.clicked.connect(self.show_settings_widget)
@@ -176,13 +180,22 @@ class MainWindow(QWidget):
 
     @pyqtSlot()
     def go_to_asciitab(self):
+        """Va à l'onglet ASCII après avoir Selectionné l'image ou une partie"""
         self.tab_widget.setCurrentIndex(1)
+
+    @pyqtSlot()
+    def conversion_done(self):
+        self.ussmessages = USSMessages(
+            ascii_colors=self.ascii_widget.ascii_colors,
+            ascii_text=self.ascii_widget.ascii_text,
+            parent=self
+        )
+        self.tab_widget.removeTab(3)
+        self.tab_widget.addTab(self.ussmessages, "Curseurs")
 
     def resizeEvent(self, event) -> None:
         super().resizeEvent(event)
         return 
-
-
 
 
 if __name__ == '__main__':
