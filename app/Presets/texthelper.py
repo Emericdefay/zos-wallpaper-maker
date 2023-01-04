@@ -90,3 +90,14 @@ apparaitrons en rouge
 pour vous le faire savoir.
 
         """
+    elif index == 3:
+        # Mettre à jour le texte pour la QTab self.prompt
+        return """
+Sur l'écran d'accueil, il
+y a un peu
+
+La zone d'instruction est
+la phrase que vous verrez
+pour vous demander 
+
+        """
